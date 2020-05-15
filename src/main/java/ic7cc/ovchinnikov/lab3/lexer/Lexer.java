@@ -10,6 +10,7 @@ public class Lexer {
     private int pointer;
     private int rowNumber;
     private int columnNumber;
+    private boolean isEnd;
     private BufferedReader reader;
     private String sourceCode;
 
@@ -27,7 +28,7 @@ public class Lexer {
 
     public boolean hasNext() {
         try {
-            return reader.ready() || hasNextString();
+            return reader.ready();
         } catch (IOException exc) {
             exc.printStackTrace();
             return false;
@@ -35,7 +36,7 @@ public class Lexer {
     }
 
     private boolean hasNextString() {
-        return sourceCode != null && pointer < sourceCode.length() && !sourceCode.isEmpty();
+        return sourceCode != null && pointer < sourceCode.length() - 1 && !sourceCode.isEmpty();
     }
 
     private void setNewString(String string) {
@@ -103,11 +104,13 @@ public class Lexer {
                 break;
             case '\0':
                 token = Token.END;
+                isEnd = true;
                 break;
             default:
-                if (sourceCode.equals("null\n"))
+                if (sourceCode.equals("null\n")) {
                     token = Token.END;
-                else
+                    isEnd = true;
+                } else
                     token = generateErrorToken();
         }
         return token;
@@ -115,6 +118,10 @@ public class Lexer {
 
     public void back() {
         pointer = prevPointer;
+    }
+
+    public boolean isEnd() {
+        return isEnd;
     }
 
     private Token generateTrueToken() {
@@ -177,7 +184,7 @@ public class Lexer {
     }
 
     private Token generateErrorToken() {
-        StringBuilder ident = new StringBuilder(sourceCode.charAt(pointer-1) + "");
+        StringBuilder ident = new StringBuilder(sourceCode.charAt(pointer - 1) + "");
         for (int i = pointer; i < sourceCode.length(); i++) {
             pointer++;
             char c = sourceCode.charAt(i);

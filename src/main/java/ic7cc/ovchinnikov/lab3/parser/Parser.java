@@ -29,10 +29,6 @@ public class Parser {
         ParseTreeNode block = createNonTerminalNode("block");
         ParseTree.addNode(node, block);
         block(block);
-        if (lexer.hasNext()) {
-            System.out.println("format program error: " + lexer.point());
-            node.setError(true);
-        }
     }
 
     // Все верно
@@ -51,6 +47,10 @@ public class Parser {
         if (pointer.equals(Token.RBRACE)) {
             ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
             pointer = lexer.next();
+            if (!pointer.equals(Token.END)) {
+                System.out.println("program structure failed: " + lexer.point());
+                node.setError(true);
+            }
         } else {
             System.out.println("expected rbrace: " + lexer.point());
             node.setError(true);
@@ -70,32 +70,7 @@ public class Parser {
     // Все верно
     public void operator(ParseTreeNode node) {
         String point = lexer.point();
-        if (!pointer.getName().equals(Token.IDENT.getName()) && !pointer.equals(Token.LBRACE)) {
-            System.out.println("expected id or lbrace: " + point);
-            node.setError(true);
-            pointer = lexer.next();
-
-            if (pointer.equals(Token.ASSIGN)) {
-                ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
-                pointer = lexer.next();
-                ParseTreeNode expression = createNonTerminalNode("expression");
-                ParseTree.addNode(node, expression);
-                expression(expression);
-            } else {
-                ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
-                pointer = lexer.next();
-                ParseTreeNode operatorsList = createNonTerminalNode("operators_list");
-                ParseTree.addNode(node, operatorsList);
-                operatorsList(operatorsList);
-                if (pointer.equals(Token.RBRACE)) {
-                    ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
-                    pointer = lexer.next();
-                } else {
-                    System.out.println("expected rbrace: " + point);
-                    node.setError(true);
-                }
-            }
-        } else if (pointer.getName().equals(Token.IDENT.getName())) {
+        if (pointer.getName().equals(Token.IDENT.getName())) {
             ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
             pointer = lexer.next();
             if (pointer.equals(Token.ASSIGN)) {
@@ -121,6 +96,9 @@ public class Parser {
                 System.out.println("expected rbrace: " + point);
                 node.setError(true);
             }
+        } else {
+            System.out.println("expected operator: " + point);
+            node.setError(true);
         }
     }
 
@@ -200,12 +178,7 @@ public class Parser {
             System.out.println("expected bool_expression: " + pointer.getSpell());
             pointer = lexer.next();
             node.setError(true);
-            ParseTreeNode boolMonomial = createNonTerminalNode("bool_monomial");
-            ParseTree.addNode(node, boolMonomial);
-            boolMonomial(boolMonomial);
-            ParseTreeNode _boolExpression = createNonTerminalNode("bool_expression'");
-            ParseTree.addNode(node, _boolExpression);
-            _boolExpression(_boolExpression);
+            _boolExpression(node);
         } else {
             ParseTree.addNode(node, createTerminalNode("\u03B5"));
         }
@@ -216,10 +189,19 @@ public class Parser {
         if (pointer.equals(Token.NOT)) {
             ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
             pointer = lexer.next();
+            ParseTreeNode boolValue = createNonTerminalNode("bool_value");
+            ParseTree.addNode(node, boolValue);
+            boolValue(boolValue);
+        } else if (pointer.getName().equals(Token.ERROR.getName())) {
+            System.out.println("expected not: " + lexer.point());
+            pointer = lexer.next();
+            node.setError(true);
+            secondaryBoolExpression(node);
+        } else {
+            ParseTreeNode boolValue = createNonTerminalNode("bool_value");
+            ParseTree.addNode(node, boolValue);
+            boolValue(boolValue);
         }
-        ParseTreeNode boolValue = createNonTerminalNode("bool_value");
-        ParseTree.addNode(node, boolValue);
-        boolValue(boolValue);
     }
 
     // Все верно
@@ -237,12 +219,7 @@ public class Parser {
             System.out.println("expected bool_expression: " + pointer.getSpell());
             pointer = lexer.next();
             node.setError(true);
-            ParseTreeNode secondaryBoolExpression = createNonTerminalNode("secondary_bool_expression");
-            ParseTree.addNode(node, secondaryBoolExpression);
-            secondaryBoolExpression(secondaryBoolExpression);
-            ParseTreeNode _boolMonomial = createNonTerminalNode("bool_monomial'");
-            ParseTree.addNode(node, _boolMonomial);
-            _boolMonomial(_boolMonomial);
+            _boolMonomial(node);
         } else {
             ParseTree.addNode(node, createTerminalNode("\u03B5"));
         }
@@ -257,6 +234,7 @@ public class Parser {
             System.out.println("expected id, true or false: " + lexer.point());
             pointer = lexer.next();
             node.setError(true);
+            boolValue(node);
         } else {
             System.out.println("expected id, true or false: " + lexer.point());
             node.setError(true);
