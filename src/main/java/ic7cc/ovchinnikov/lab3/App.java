@@ -5,18 +5,38 @@ package ic7cc.ovchinnikov.lab3;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import ic7cc.ovchinnikov.lab3.lexer.Lexer;
 import ic7cc.ovchinnikov.lab3.model.*;
+import ic7cc.ovchinnikov.lab3.optimization.ChomskyNormalGrammarBuilder;
+import ic7cc.ovchinnikov.lab3.optimization.GrammarWithLeftFactoringBuilder;
+import ic7cc.ovchinnikov.lab3.optimization.GrammarWithoutLeftRecursionBuilder;
+import ic7cc.ovchinnikov.lab3.parser.Parser;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 public class App {
 
     public static void main(String[] args) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        Grammar grammar = grammarG4WithC();
-        mapper.writeValue(Paths.get("grammar/convert_to_json_grammar.json").toFile(), grammar);
-        System.out.println(grammar);
+        List<String> sourceStrings = Files.readAllLines(Path.of("test/source_code.txt"));
+
+        Parser parser = new Parser("test/source_code.txt");
+        parser.parse();
+
+        parser.printParseTreePNG();
+//        ObjectMapper mapper = new ObjectMapper();
+//        Grammar grammar = grammarG4WithC();
+//        mapper.writeValue(Paths.get("grammar/convert_to_json_grammar.json").toFile(), grammar);
+////
+//
+//        Grammar grammarWithoutLeftRecursion = GrammarWithoutLeftRecursionBuilder.build(grammar);
+//        Grammar grammarWithLeftFactoring = GrammarWithLeftFactoringBuilder.build(grammarWithoutLeftRecursion);
+//
+//        System.out.println(ChomskyNormalGrammarBuilder.removeUselessCharacter(grammarWithLeftFactoring));
+
     }
 
     public static Grammar grammarG4WithC() {
@@ -44,7 +64,6 @@ public class App {
         NonTerminal operatorsList = new NonTerminal("<operators_list>");
         NonTerminal operator = new NonTerminal("<operator>");
         NonTerminal tail = new NonTerminal("<tail>");
-        NonTerminal ident = new NonTerminal("<ident>");
         NonTerminal expression = new NonTerminal("<expression>");
         NonTerminal boolExpression = new NonTerminal("<bool_expression>");
         NonTerminal boolMonomial = new NonTerminal("<bool_monomial>");
@@ -52,7 +71,7 @@ public class App {
         NonTerminal primaryBoolExpression = new NonTerminal("<primary_bool_expression>");
         NonTerminal boolValue = new NonTerminal("<bool_value>");
         NonTerminal boolOperationSign = new NonTerminal("<bool_operation_sign>");
-        grammar.addNonTerminals(block, operatorsList, operator, tail, ident, expression, boolExpression, boolMonomial,
+        grammar.addNonTerminals(block, operatorsList, operator, tail, expression, boolExpression, boolMonomial,
                 secondaryBoolExpression, primaryBoolExpression, boolValue, boolOperationSign);
 
         grammar.addProduction(grammar.getStartSymbol(), block.toSymbol());
@@ -60,7 +79,7 @@ public class App {
         grammar.addProduction(operatorsList, operator.toSymbol(), tail.toSymbol());
         grammar.addProduction(tail, semicolon.toSymbol(), operator.toSymbol(), tail.toSymbol());
         grammar.addProduction(tail, Symbol.EPSILON);
-        grammar.addProduction(operator, ident.toSymbol(), assign.toSymbol(), expression.toSymbol());
+        grammar.addProduction(operator, id.toSymbol(), assign.toSymbol(), expression.toSymbol());
         grammar.addProduction(operator, block.toSymbol());
         grammar.addProduction(expression, boolExpression.toSymbol());
         grammar.addProduction(boolExpression, boolMonomial.toSymbol());
@@ -70,13 +89,12 @@ public class App {
         grammar.addProduction(secondaryBoolExpression, primaryBoolExpression.toSymbol());
         grammar.addProduction(secondaryBoolExpression, not.toSymbol(), primaryBoolExpression.toSymbol());
         grammar.addProduction(primaryBoolExpression, boolValue.toSymbol());
-        grammar.addProduction(primaryBoolExpression, ident.toSymbol());
+        grammar.addProduction(primaryBoolExpression, id.toSymbol());
         grammar.addProduction(boolValue, trueTerm.toSymbol());
         grammar.addProduction(boolValue, falseTerm.toSymbol());
         grammar.addProduction(boolOperationSign, not.toSymbol());
         grammar.addProduction(boolOperationSign, and.toSymbol());
         grammar.addProduction(boolOperationSign, or.toSymbol());
-        grammar.addProduction(ident, id.toSymbol());
 
         return grammar;
     }

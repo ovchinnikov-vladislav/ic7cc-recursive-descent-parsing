@@ -1,0 +1,129 @@
+{
+  "name" : "Test Chomsky",
+  "startSymbol" : {
+    "name" : "E"
+  },
+  "terminals" : [ {
+    "name" : "IDENT",
+    "spell" : "id"
+  }, {
+    "name" : "ADD",
+    "spell" : "+"
+  }, {
+    "name" : "MUL",
+    "spell" : "*"
+  }, {
+    "name" : "LPAREN",
+    "spell" : "("
+  }, {
+    "name" : "RPAREN",
+    "spell" : ")"
+  } ],
+  "nonTerminals" : [ {
+    "name" : "E"
+  }, {
+    "name" : "T"
+  }, {
+    "name" : "F"
+  }, {
+    "name" : "E'"
+  }, {
+    "name" : "T'"
+  } ],
+  "productions" : [ {
+    "lhs" : {
+      "name" : "F"
+    },
+    "rhs" : [ {
+      "name" : "LPAREN",
+      "spell" : "(",
+      "type" : "term"
+    }, {
+      "name" : "E",
+      "type" : "nonterm"
+    }, {
+      "name" : "RPAREN",
+      "spell" : ")",
+      "type" : "term"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "F"
+    },
+    "rhs" : [ {
+      "name" : "IDENT",
+      "spell" : "id",
+      "type" : "term"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "E"
+    },
+    "rhs" : [ {
+      "name" : "T",
+      "type" : "nonterm"
+    }, {
+      "name" : "E'",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "E'"
+    },
+    "rhs" : [ {
+      "name" : "ADD",
+      "spell" : "+",
+      "type" : "term"
+    }, {
+      "name" : "T",
+      "type" : "nonterm"
+    }, {
+      "name" : "E'",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "E'"
+    },
+    "rhs" : [ {
+      "name" : "EPSILON",
+      "spell" : "eps",
+      "type" : "eps"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "T'"
+    },
+    "rhs" : [ {
+      "name" : "MUL",
+      "spell" : "*",
+      "type" : "term"
+    }, {
+      "name" : "F",
+      "type" : "nonterm"
+    }, {
+      "name" : "T'",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "T'"
+    },
+    "rhs" : [ {
+      "name" : "EPSILON",
+      "spell" : "eps",
+      "type" : "eps"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "T"
+    },
+    "rhs" : [ {
+      "name" : "F",
+      "type" : "nonterm"
+    }, {
+      "name" : "T'",
+      "type" : "nonterm"
+    } ]
+  } ]
+}

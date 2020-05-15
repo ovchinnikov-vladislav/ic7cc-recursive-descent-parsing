@@ -134,10 +134,17 @@ public class Grammar {
     @Override
     public String toString() {
         StringBuilder productionString = new StringBuilder();
-        for (Production production : productions) {
-            productionString.append("\t\t").append(production.getLhs().getName()).append(" -> ");
-            for (Symbol symbol : production.getRhs())
-                productionString.append(symbol.isTerminal() ? symbol.getSpell() : symbol.getName()).append(" ");
+        for (NonTerminal nonTerminal : nonTerminals) {
+            productionString.append("\t\t").append(nonTerminal.getName()).append(" -> ");
+            Set<Production> productions = findProductionsByLhs(nonTerminal);
+            int i = 0;
+            for (Production production : productions) {
+                for (Symbol symbol : production.getRhs())
+                    productionString.append(symbol.isTerminal() ? symbol.getSpell() : symbol.getName()).append(" ");
+                i++;
+                if (i != productions.size())
+                    productionString.append(" | ");
+            }
             productionString.append("\n");
         }
 

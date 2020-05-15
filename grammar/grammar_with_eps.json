@@ -1,0 +1,85 @@
+{
+  "name" : "G",
+  "startSymbol" : {
+    "name" : "S"
+  },
+  "terminals" : [ {
+    "name" : "d",
+    "spell" : "d"
+  } ],
+  "nonTerminals" : [ {
+    "name" : "S"
+  }, {
+    "name" : "A"
+  }, {
+    "name" : "B"
+  }, {
+    "name" : "C"
+  }, {
+    "name" : "D"
+  } ],
+  "productions" : [ {
+    "lhs" : {
+      "name" : "S"
+    },
+    "rhs" : [ {
+      "name" : "A",
+      "type" : "nonterm"
+    }, {
+      "name" : "B",
+      "type" : "nonterm"
+    }, {
+      "name" : "C",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "S"
+    },
+    "rhs" : [ {
+      "name" : "D",
+      "type" : "nonterm"
+    }, {
+      "name" : "S",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "A"
+    },
+    "rhs" : [ {
+      "name" : "EPSILON",
+      "spell" : "eps",
+      "type" : "eps"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "B"
+    },
+    "rhs" : [ {
+      "name" : "A",
+      "type" : "nonterm"
+    }, {
+      "name" : "C",
+      "type" : "nonterm"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "C"
+    },
+    "rhs" : [ {
+      "name" : "EPSILON",
+      "spell" : "eps",
+      "type" : "eps"
+    } ]
+  }, {
+    "lhs" : {
+      "name" : "D"
+    },
+    "rhs" : [ {
+      "name" : "d",
+      "spell" : "d",
+      "type" : "term"
+    } ]
+  } ]
+}

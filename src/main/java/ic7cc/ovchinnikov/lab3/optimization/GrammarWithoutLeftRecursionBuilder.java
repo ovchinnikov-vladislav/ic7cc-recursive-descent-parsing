@@ -16,8 +16,7 @@ public class GrammarWithoutLeftRecursionBuilder {
      * @return грамматика без левой рекурсии
      * */
     public static Grammar build(Grammar grammar) {
-        log.info("Left Recursion Elimination");
-        log.info("Grammar Before:\n" + grammar);
+        log.info("Input Grammar (left recursion builder):\n" + grammar);
         // Создаем новую грамматику на основе существующей
         Grammar newGrammar = grammar.clone();
 
@@ -50,11 +49,11 @@ public class GrammarWithoutLeftRecursionBuilder {
                         }
                     }
                 }
-                log.info("i = " + i + ", j = " + j + ". " + newGrammar.toString());
+             //   log.info("i = " + i + ", j = " + j + ". " + newGrammar.toString());
             }
 
             // Устранение непосредственной левой рекурсии среди NTi - продукций
-            if (isRecursive(newGrammar, Symbol.of(nonTerms.get(i)))) {
+            if (isLeftRecursive(newGrammar, Symbol.of(nonTerms.get(i)))) {
                 Set<Production> productionsNonTerminalI = newGrammar.findProductionsByLhs(nonTerms.get(i));
                 // Проходимся по всем NTi - продукциями
                 for (Production production : productionsNonTerminalI) {
@@ -89,9 +88,9 @@ public class GrammarWithoutLeftRecursionBuilder {
                     }
                 }
             }
-            log.debug("i = " + i + ". " + newGrammar.toString());
+        //    log.debug("i = " + i + ". " + newGrammar.toString());
         }
-        log.debug("Grammar Result:\n" + newGrammar);
+        log.debug("Output Grammar (left recursion builder):\n" + newGrammar);
         return newGrammar;
     }
 
@@ -101,10 +100,10 @@ public class GrammarWithoutLeftRecursionBuilder {
      * @param nonTerm - нетерминал слева в правиле
      * @return true/false
      */
-    private static boolean isRecursive(Grammar grammar, Symbol nonTerm) {
+    private static boolean isLeftRecursive(Grammar grammar, Symbol nonTerm) {
         Set<Production> productions = grammar.findProductionsByLhs(nonTerm.isNonTerminalGetting());
         for (Production p : productions) {
-            if (p.getRhs().contains(Symbol.of(p.getLhs())))
+            if (p.getRhs().get(0).equals(Symbol.of(p.getLhs())))
                 return true;
         }
         return false;

@@ -103,6 +103,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Удаление eps-правил (работает только для недлинных продукций)
+     *
      * @param grammar - КС-грамматика без длинных продукций
      * @return КС-грамматика без eps-правил
      */
@@ -122,7 +123,7 @@ public class ChomskyNormalGrammarBuilder {
             newGrammar.addNonTerminals(grammar.getNonTerminals().toArray(NonTerminal[]::new));
             newGrammar.addProduction(newTerminalSp, Symbol.of(grammar.getStartSymbol()));
             newGrammar.addProduction(newTerminalSp, Symbol.EPSILON);
-        // иначе генерю грамматику без продукций
+            // иначе генерю грамматику без продукций
         } else {
             newGrammar = new Grammar(grammar.getName(), grammar.getStartSymbol().getName());
             newGrammar.addTerminals(grammar.getTerminals().toArray(Terminal[]::new));
@@ -153,6 +154,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Поиск всех eps-порождающих нетерминалов
+     *
      * @param grammar - КС-грамматика
      * @return мапа нетерминал - порождает (true) / не порождает (false)
      */
@@ -216,6 +218,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Продукция содержит только терминалы?
+     *
      * @param production - продукция
      * @return true/false
      */
@@ -229,6 +232,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Удаление цепных правил вида A -> B
+     *
      * @param grammar - КС-грамматика
      * @return КС-грамматика без цепных правил
      */
@@ -262,11 +266,15 @@ public class ChomskyNormalGrammarBuilder {
         // Последовательно проверяю цепные правила и переписываю, только те, которые не являются цепными
         for (Pair<NonTerminal, NonTerminal> pair : set) {
             for (Production production : grammar.getProductions()) {
-                if (!pair.s().equals(pair.f())) {
-                    if (isNotChainRule(production) && production.getLhs().equals(pair.s())) {
-                        newGrammar.addProduction(pair.f(), production.getRhs().toArray(Symbol[]::new));
-                    }
-                } else if (isNotChainRule(production)) {
+                if (production.getLhs().equals(pair.s())) {
+                    Production newProd1 = new Production(pair.f(), new LinkedList<>(production.getRhs()));
+                    Production newProd2 = new Production(pair.s(), new LinkedList<>(production.getRhs()));
+                    if (isNotChainRule(newProd1))
+                        newGrammar.addProduction(newProd1);
+                    if (isNotChainRule(newProd2))
+                        newGrammar.addProduction(newProd2);
+                }
+                if (isNotChainRule(production)) {
                     newGrammar.addProduction(production);
                 }
             }
@@ -281,6 +289,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Удаление бесполезных символов
+     *
      * @param grammar - КС грамматика
      * @return КС грамматика без бесполезных символов
      */
@@ -291,6 +300,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Удаление непорождающих нетерминалов
+     *
      * @param grammar - КС грамматика
      * @return КС грамматика без непорождающих терминалов
      */
@@ -370,6 +380,7 @@ public class ChomskyNormalGrammarBuilder {
 
     /**
      * Удаление недостижимых символов
+     *
      * @param grammar - КС-грамматика
      * @return КС-грамматика без недостижимых символов
      */
@@ -415,6 +426,7 @@ public class ChomskyNormalGrammarBuilder {
     /**
      * Удаление тех правил, в которых встречаются несколько терминалов, и замена их новыми.
      * Работает только для правил, в которых в правой части содержатся 2 символа (хотя бы один символ терминал)
+     *
      * @param grammar - КС-грамматика, отвечающая вышепоставленному условию
      * @return КС-грамматика с правилами вида A -> BC A -> a B -> b C -> c и т.д.
      */

@@ -24,7 +24,7 @@ public class GrammarWithLeftFactoringBuilder {
     }
 
     private static Grammar leftFactoring(Grammar grammar) {
-        log.info("Input Grammar (left factoring - iteration): {}", grammar);
+      //  log.info("Input Grammar (left factoring - iteration): {}", grammar);
         Grammar newGrammar = new Grammar(grammar.getName(), grammar.getStartSymbol().getName());
         newGrammar.addNonTerminals(grammar.getNonTerminals().toArray(NonTerminal[]::new));
         newGrammar.addTerminals(grammar.getTerminals().toArray(Terminal[]::new));
@@ -44,7 +44,7 @@ public class GrammarWithLeftFactoringBuilder {
             }
         }
         if (isNotPossibleLeftFactoring) {
-            log.info("Output Grammar (left factoring - iteration): {}", grammar);
+      //      log.info("Output Grammar (left factoring - iteration): {}", grammar);
             return grammar;
         }
 
