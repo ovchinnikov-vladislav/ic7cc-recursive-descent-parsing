@@ -1,0 +1,18 @@
+{
+    $id = true
+    {
+        $elem = false
+    };
+    {
+        $k = true
+        {
+            $parse = true;
+            {
+                $k = $elem
+                {
+                    $be = false
+                }
+            }
+        }
+    }
+}

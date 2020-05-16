@@ -1,12 +1,9 @@
-<program> -> <block>
-<block> -> { <operators_list> }
+<program> -> { <operators_list> }
 <tail> -> ; <operator> <tail>  | EPSILON
 <operators_list> -> <operator> <tail>
-<bool_value> -> $id | true | false
-<secondary_bool_expression> -> ~ <bool_value>  | <bool_value>
+<secondary_bool_expression> -> ~ $id | ~ true | ~ false | $id | true | false
 <operator> -> $id = <expression>  | { <operators_list> }
 <bool_monomial> -> <secondary_bool_expression> <bool_monomial>'
-<expression> -> <bool_expression>
-<bool_expression> -> <bool_monomial> <bool_expression>'
-<bool_expression>' -> ! <bool_monomial> <bool_expression>'  | EPSILON
+<expression> -> <bool_monomial> <bool_expression>
+<bool_expression> -> ! <bool_monomial> <bool_expression>  | EPSILON
 <bool_monomial>' -> EPSILON  | & <secondary_bool_expression> <bool_monomial>'

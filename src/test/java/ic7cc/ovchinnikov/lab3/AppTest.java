@@ -3,26 +3,160 @@
  */
 package ic7cc.ovchinnikov.lab3;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import ic7cc.ovchinnikov.lab3.model.Grammar;
-import ic7cc.ovchinnikov.lab3.model.NonTerminal;
-import ic7cc.ovchinnikov.lab3.model.Symbol;
-import ic7cc.ovchinnikov.lab3.model.Terminal;
+import ic7cc.ovchinnikov.lab3.lexer.Lexer;
+import ic7cc.ovchinnikov.lab3.lexer.Token;
+import ic7cc.ovchinnikov.lab3.parser.Parser;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
-import java.nio.file.Paths;
-import java.util.Map;
 import java.util.logging.Logger;
 
 public class AppTest {
 
     private static final Logger log = Logger.getLogger(AppTest.class.getName());
 
-    private static final ObjectMapper mapper = new ObjectMapper()
-            .enable(SerializationFeature.INDENT_OUTPUT);
+    @Test
+    public void testLexerSourceCode1() {
+        Lexer lexer = new Lexer("test/source_code_1.txt");
 
+        Token token = null;
+        while (lexer.hasNext()) {
+            token = lexer.next();
+        }
+        Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(Token.END, lexer.next());
+    }
 
+    @Test
+    public void testLexerSourceCode2() throws IOException {
+        Lexer lexer = new Lexer("test/source_code_2.txt");
+
+        Token token = null;
+        while (lexer.hasNext()) {
+            token = lexer.next();
+        }
+        Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(Token.END, lexer.next());
+    }
+
+    @Test
+    public void testLexerSourceCode3() throws IOException {
+        Lexer lexer = new Lexer("test/source_code_3.txt");
+
+        Token token = null;
+        while (lexer.hasNext()) {
+            token = lexer.next();
+        }
+        Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(Token.END, lexer.next());
+    }
+
+    @Test
+    public void testLexerSourceCode4() throws IOException {
+        Lexer lexer = new Lexer("test/source_code_4.txt");
+
+        Token token = null;
+        while (lexer.hasNext()) {
+            token = lexer.next();
+        }
+        Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(Token.END, lexer.next());
+    }
+
+    @Test
+    public void testLexerSourceCode5() throws IOException {
+        Lexer lexer = new Lexer("test/source_code_5.txt");
+
+        Token token = null;
+        while (lexer.hasNext()) {
+            token = lexer.next();
+        }
+        Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(Token.END, lexer.next());
+    }
+
+    @Test
+    public void testParserSourceCode1() throws IOException {
+        Parser parser = new Parser("test/source_code_1.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_1.png");
+
+        Assert.assertEquals(68, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(0, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode2() throws IOException {
+        Parser parser = new Parser("test/source_code_2.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_2.png");
+
+        Assert.assertEquals(17, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(0, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode3() throws IOException {
+        Parser parser = new Parser("test/source_code_3.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_3.png");
+
+        Assert.assertEquals(26, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(3, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode4() throws IOException {
+        Parser parser = new Parser("test/source_code_4.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_4.png");
+
+        Assert.assertEquals(109, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(3, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode5() throws IOException {
+        Parser parser = new Parser("test/source_code_5.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_5.png");
+
+        Assert.assertEquals(126, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(0, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode6() throws IOException {
+        Parser parser = new Parser("test/source_code_6.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_6.png");
+
+        Assert.assertEquals(18, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(3, parser.info().get("Number of mistakes").intValue());
+    }
+
+    @Test
+    public void testParserSourceCode7() throws IOException {
+        Parser parser = new Parser("test/source_code_7.txt");
+
+        parser.parse();
+
+        parser.printParseTreePNG("result/parse_tree_7.png");
+
+        Assert.assertEquals(41, parser.info().get("Number of nodes").intValue());
+        Assert.assertEquals(1, parser.info().get("Number of mistakes").intValue());
+    }
 }

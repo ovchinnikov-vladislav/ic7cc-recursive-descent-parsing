@@ -6,9 +6,6 @@ import ic7cc.ovchinnikov.lab3.model.*;
 import ic7cc.ovchinnikov.lab3.parser.Parser;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 public class App {
 
@@ -16,7 +13,7 @@ public class App {
         Parser parser = new Parser("test/source_code.txt");
         parser.parse();
 
-        parser.printParseTreePNG();
+        parser.printParseTreePNG("result/parse_tree.png");
     }
 
     public static Grammar grammarG4WithC() {

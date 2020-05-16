@@ -37,4 +37,12 @@ public class Token extends Terminal {
                 token.equals(ASSIGN) || token.equals(OR) || token.equals(AND) ||
                 token.equals(NOT) || token.equals(TRUE) || token.equals(FALSE) || token.getName().equals(IDENT.getName());
     }
+
+    public static boolean isOperator(Token token) {
+        return token.equals(NOT) || token.equals(OR) || token.equals(AND) || token.equals(ASSIGN);
+    }
+
+    public static boolean isLiteral(Token token) {
+        return token.equals(TRUE) || token.equals(FALSE);
+    }
 }

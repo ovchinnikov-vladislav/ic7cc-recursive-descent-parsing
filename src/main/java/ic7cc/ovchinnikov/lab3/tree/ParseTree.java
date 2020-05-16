@@ -61,6 +61,28 @@ public class ParseTree {
         Graphviz.fromGraph(g).width(4096).render(Format.PNG).toFile(new File(fullName));
     }
 
+    public Map<String, Integer> info() {
+        Map<String, Integer> infoMap = new HashMap<>();
+        Deque<ParseTreeNode> deque = new ArrayDeque<>();
+        deque.push(root);
+        infoMap.put("Number of mistakes", 0);
+        infoMap.put("Number of nodes", 0);
+        while (!deque.isEmpty()) {
+            ParseTreeNode popNode = deque.pop();
+            int countNode = infoMap.get("Number of nodes");
+            infoMap.put("Number of nodes", ++countNode);
+            if (popNode.isError) {
+                int countError = infoMap.get("Number of mistakes");
+                infoMap.put("Number of mistakes", ++countError);
+            }
+            for (Object obj : popNode.getChildren()) {
+                ParseTreeNode n = (ParseTreeNode) obj;
+                deque.push(n);
+            }
+        }
+        return infoMap;
+    }
+
     public static class ParseTreeNode extends TreeNode<String> {
 
         private final UUID id;
