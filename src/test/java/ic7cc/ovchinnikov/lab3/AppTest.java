@@ -4,7 +4,7 @@
 package ic7cc.ovchinnikov.lab3;
 
 import ic7cc.ovchinnikov.lab3.lexer.Lexer;
-import ic7cc.ovchinnikov.lab3.lexer.Token;
+import ic7cc.ovchinnikov.lab3.model.Token;
 import ic7cc.ovchinnikov.lab3.parser.Parser;
 import org.junit.Assert;
 import org.junit.Test;
@@ -21,10 +21,13 @@ public class AppTest {
         Lexer lexer = new Lexer("test/source_code_1.txt");
 
         Token token = null;
+        int i = 0;
         while (lexer.hasNext()) {
             token = lexer.next();
+            i++;
         }
         Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(22, i);
         Assert.assertEquals(Token.END, lexer.next());
     }
 
@@ -33,10 +36,13 @@ public class AppTest {
         Lexer lexer = new Lexer("test/source_code_2.txt");
 
         Token token = null;
+        int i = 0;
         while (lexer.hasNext()) {
             token = lexer.next();
+            i++;
         }
         Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(5, i);
         Assert.assertEquals(Token.END, lexer.next());
     }
 
@@ -45,10 +51,13 @@ public class AppTest {
         Lexer lexer = new Lexer("test/source_code_3.txt");
 
         Token token = null;
+        int i = 0;
         while (lexer.hasNext()) {
             token = lexer.next();
+            i++;
         }
         Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(10, i);
         Assert.assertEquals(Token.END, lexer.next());
     }
 
@@ -57,10 +66,13 @@ public class AppTest {
         Lexer lexer = new Lexer("test/source_code_4.txt");
 
         Token token = null;
+        int i = 0;
         while (lexer.hasNext()) {
             token = lexer.next();
+            i++;
         }
         Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(32, i);
         Assert.assertEquals(Token.END, lexer.next());
     }
 
@@ -69,10 +81,13 @@ public class AppTest {
         Lexer lexer = new Lexer("test/source_code_5.txt");
 
         Token token = null;
+        int i = 0;
         while (lexer.hasNext()) {
             token = lexer.next();
+            i++;
         }
         Assert.assertEquals(Token.RBRACE, token);
+        Assert.assertEquals(44, i);
         Assert.assertEquals(Token.END, lexer.next());
     }
 

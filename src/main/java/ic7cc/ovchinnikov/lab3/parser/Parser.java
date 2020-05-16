@@ -1,7 +1,7 @@
 package ic7cc.ovchinnikov.lab3.parser;
 
 import ic7cc.ovchinnikov.lab3.lexer.Lexer;
-import ic7cc.ovchinnikov.lab3.lexer.Token;
+import ic7cc.ovchinnikov.lab3.model.Token;
 import ic7cc.ovchinnikov.lab3.tree.ParseTree;
 
 import static ic7cc.ovchinnikov.lab3.tree.ParseTree.ParseTreeNode;
@@ -98,7 +98,7 @@ public class Parser {
                 ParseTree.addNode(node, expression);
                 expression(expression);
             }
-        } else if (pointer.getName().equals(Token.RBRACE.getName())) {
+        } else if (pointer.equals(Token.RBRACE) || pointer.equals(Token.END)) {
             System.out.println("expected operator: " + point);
             node.setError(true);
         } else {

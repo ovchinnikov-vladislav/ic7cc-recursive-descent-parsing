@@ -1,7 +1,4 @@
-package ic7cc.ovchinnikov.lab3.lexer;
-
-import com.kitfox.svg.A;
-import ic7cc.ovchinnikov.lab3.model.Terminal;
+package ic7cc.ovchinnikov.lab3.model;
 
 public class Token extends Terminal {
 

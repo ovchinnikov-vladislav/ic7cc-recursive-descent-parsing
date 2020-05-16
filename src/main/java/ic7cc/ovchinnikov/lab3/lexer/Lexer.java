@@ -1,5 +1,7 @@
 package ic7cc.ovchinnikov.lab3.lexer;
 
+import ic7cc.ovchinnikov.lab3.model.Token;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
