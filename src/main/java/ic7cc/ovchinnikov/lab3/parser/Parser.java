@@ -152,9 +152,9 @@ public class Parser {
     }
 
     private void boolMonomial(ParseTreeNode node) {
-        ParseTreeNode secondaryBoolExpression = createNonTerminalNode("secondary_bool_expression");
-        ParseTree.addNode(node, secondaryBoolExpression);
-        secondaryBoolExpression(secondaryBoolExpression);
+        ParseTreeNode boolValue = createNonTerminalNode("boolValue");
+        ParseTree.addNode(node, boolValue);
+        boolValue(boolValue);
         ParseTreeNode _boolMonomial = createNonTerminalNode("bool_monomial'");
         ParseTree.addNode(node, _boolMonomial);
         _boolMonomial(_boolMonomial);
@@ -180,7 +180,7 @@ public class Parser {
         }
     }
 
-    private void secondaryBoolExpression(ParseTreeNode node) {
+    private void boolValue(ParseTreeNode node) {
         if (pointer.equals(Token.NOT)) {
             ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
             pointer = lexer.next();
@@ -191,7 +191,7 @@ public class Parser {
                 System.out.println("expected id, true or false: " + lexer.point());
                 pointer = lexer.next();
                 node.setError(true);
-                secondaryBoolExpression(node);
+                boolValue(node);
             } else {
                 System.out.println("expected id, true or false: " + lexer.point());
                 node.setError(true);
@@ -200,7 +200,7 @@ public class Parser {
             System.out.println("expected not: " + lexer.point());
             pointer = lexer.next();
             node.setError(true);
-            secondaryBoolExpression(node);
+            boolValue(node);
         } else {
             if (pointer.getName().equals(Token.IDENT.getName()) || pointer.equals(Token.TRUE) || pointer.equals(Token.FALSE)) {
                 ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
@@ -209,7 +209,7 @@ public class Parser {
                 System.out.println("expected id, true or false: " + lexer.point());
                 pointer = lexer.next();
                 node.setError(true);
-                secondaryBoolExpression(node);
+                boolValue(node);
             } else {
                 System.out.println("expected id, true or false: " + lexer.point());
                 node.setError(true);
@@ -221,9 +221,9 @@ public class Parser {
         if (pointer.equals(Token.AND)) {
             ParseTree.addNode(node, createTerminalNode(pointer.getSpell()));
             pointer = lexer.next();
-            ParseTreeNode secondaryBoolExpression = createNonTerminalNode("secondary_bool_expression");
-            ParseTree.addNode(node, secondaryBoolExpression);
-            secondaryBoolExpression(secondaryBoolExpression);
+            ParseTreeNode boolValue = createNonTerminalNode("boolValue");
+            ParseTree.addNode(node, boolValue);
+            boolValue(boolValue);
             ParseTreeNode _boolMonomial = createNonTerminalNode("bool_monomial'");
             ParseTree.addNode(node, _boolMonomial);
             _boolMonomial(_boolMonomial);
@@ -231,7 +231,12 @@ public class Parser {
             System.out.println("expected bool_expression: " + pointer.getSpell());
             pointer = lexer.next();
             node.setError(true);
-            _boolMonomial(node);
+            ParseTreeNode boolValue = createNonTerminalNode("boolValue");
+            ParseTree.addNode(node, boolValue);
+            boolValue(boolValue);
+            ParseTreeNode _boolMonomial = createNonTerminalNode("bool_monomial'");
+            ParseTree.addNode(node, _boolMonomial);
+            _boolMonomial(_boolMonomial);
         } else {
             ParseTree.addNode(node, createTerminalNode("\u03B5"));
         }
