@@ -197,7 +197,7 @@ public class Parser {
                 node.setError(true);
             }
         } else if (pointer.getName().equals(Token.ERROR.getName())) {
-            System.out.println("expected not: " + lexer.point());
+            System.out.println("expected bool value: " + lexer.point());
             pointer = lexer.next();
             node.setError(true);
             boolValue(node);
