@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Logger;
 
 public class AppTest {
@@ -20,14 +22,23 @@ public class AppTest {
     public void testLexerSourceCode1() {
         Lexer lexer = new Lexer("test/source_code_1.txt");
 
-        Token token = null;
-        int i = 0;
+        List<Token> tokenList = new LinkedList<>() {{
+            add(Token.LBRACE);add(Token.IDENT);add(Token.ASSIGN);
+            add(Token.FALSE);add(Token.SEMICOLON);add(Token.LBRACE);
+            add(Token.IDENT);add(Token.ASSIGN);add(Token.TRUE);
+            add(Token.OR);add(Token.FALSE);add(Token.AND);
+            add(Token.NOT);add(Token.TRUE);add(Token.RBRACE);
+            add(Token.SEMICOLON);add(Token.IDENT);add(Token.ASSIGN);
+            add(Token.TRUE);add(Token.OR);add(Token.FALSE);
+            add(Token.RBRACE);
+        }};
+
+        List<Token> resultTokens = new LinkedList<>();
         while (lexer.hasNext()) {
-            token = lexer.next();
-            i++;
+            Token t = lexer.next();
+            resultTokens.add(t.getName().equals(Token.IDENT.getName()) ? Token.IDENT : t);
         }
-        Assert.assertEquals(Token.RBRACE, token);
-        Assert.assertEquals(22, i);
+        Assert.assertEquals(tokenList, resultTokens);
         Assert.assertEquals(Token.END, lexer.next());
     }
 
@@ -35,14 +46,19 @@ public class AppTest {
     public void testLexerSourceCode2() throws IOException {
         Lexer lexer = new Lexer("test/source_code_2.txt");
 
-        Token token = null;
-        int i = 0;
+        List<Token> tokenList = new LinkedList<>() {{
+            add(Token.LBRACE);
+            add(Token.IDENT);add(Token.ASSIGN);add(Token.TRUE);
+            add(Token.RBRACE);
+        }};
+
+        List<Token> resultTokens = new LinkedList<>();
         while (lexer.hasNext()) {
-            token = lexer.next();
-            i++;
+            Token t = lexer.next();
+            resultTokens.add(t.getName().equals(Token.IDENT.getName()) ? Token.IDENT : t);
         }
-        Assert.assertEquals(Token.RBRACE, token);
-        Assert.assertEquals(5, i);
+        Assert.assertEquals(tokenList, resultTokens);
+        Assert.assertEquals(Token.END, lexer.next());
         Assert.assertEquals(Token.END, lexer.next());
     }
 
